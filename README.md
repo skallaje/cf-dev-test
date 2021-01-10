@@ -5,14 +5,17 @@ This is a standardized coding test given to ColdFusion/CFML developer applicants
 ## Install Instructions
 
 1. Clone this code test repository to your local machine
-2. Create a database named `Meetingplay_codeTest` on a local or hosted Microsoft SQL Server and use the `mssql_server_setup_script.sql` file to generate required tables. **NOTE**: If you do not have access to a MSSQL server, please contact your POC with MeetingPlay.
-**NOTE**When using a local sql server instance, you may need to enable TCP/IP.  You can look at this page(https://www.habaneroconsulting.com/stories/insights/2015/tcpip-is-disabled-by-default-in-microsoft-sql-server-2014) to see how that is done.
+2. Create a database named `Meetingplay_codeTest` on a local or hosted Microsoft SQL Server and use the `mssql_server_setup_script.sql` file to generate required tables. 
+* **NOTE**: If you do not have access to a MSSQL server, please contact your POC with MeetingPlay.
+* **NOTE**: When using a local sql server instance, you may need to enable TCP/IP.  You can [look at this page](https://www.habaneroconsulting.com/stories/insights/2015/tcpip-is-disabled-by-default-in-microsoft-sql-server-2014) to see how that is done.
 3. If you do not already have CommandBox installed, you can download and install the latest version from [Ortus](https://www.ortussolutions.com/products/commandbox) and install it. It is required to complete this test.
 4. Open a terminal and `cd` to the directory where you stored the copy of this code test repository
 5. Type `box server start` to start a Lucee CFML server
 6. Open Lucee server admin at `/lucee/admin/server.cfm` and add a datasource named `Meetingplay_codeTest`
 
-At this point you should have a running version of the test code and the browser will open to the index page from where you may get started with the test. **NOTE**: If you do not have a running version of the code at this point, please contact your POC with MeetingPlay.
+At this point you should have a running version of the test code and the browser will open to the index page from where you may get started with the test. 
+
+* **NOTE**: If you do not have a running version of the code at this point, please contact your POC with MeetingPlay.
 
 ## Test Instructions
 
