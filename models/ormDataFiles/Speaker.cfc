@@ -13,7 +13,7 @@ component output=false entityname="Speaker" table="Speakers" persistent=true
 	property name="updatedOn" 	ormtype="timestamp" notnull="true"	required="true";
 	property name="isActive" 	ormtype="boolean" notnull="true" required="true" default="true";
 
-	property	name="SpeakerType"
+	property	name="speakerType"
 				fieldtype="many-to-one"
 				cfc="SpeakerType"
 				fkcolumn="speakerTypeID"

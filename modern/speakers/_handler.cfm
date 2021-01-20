@@ -18,9 +18,9 @@
 		// *** UPDATE ***
 		case 'update':
 			// TODO - get the speaker bean
-
+			rc.speakerObj = new models.beans.SpeakerBean();
 			// TODO - set speakerID of the speaker bean from obfuscated and encrypted value passed in form
-
+			rc.speakerObj.setSpeakerID( rc.speakerObj.getDecUid( rc[ rc.speakerObj.getUidHash( 'form' ) ], 'form' ) );
 
 			// get the CSRF token key and token passed in the form
 			rc.token = {
@@ -34,13 +34,17 @@
 			}
 
 			// check if the speakerID is a zero guid
-			if( rc.speakerObj.getSpeakerID() eq application.zeroGuid ) {
+			if( rc.speakerObj.getSpeakerUID() eq application.zeroGuid ) {
+
 				// TODO - it is, set it to a new generated guid value
+				rc.speakerObj.setSpeakerUid( application.securityService.getGUID() );
 
 				// TODO - set createdOn to now()
+				rc.speakerObj.setCreatedOn( now() );
 
 			} else {
 				// TODO - it isn't, populate the speaker bean from the database
+				rc.speakerObj = application.speakerService.getSpeakerByID( rc.speakerObj.getSpeakerID() );
 
 			}
 			rc.speakerObj.setSpeakerTypeID( trim( rc.speakerTypeID ) );
@@ -48,25 +52,35 @@
 			//finish setting the properties on the speaker bean
 
 			// TODO - set the value of firstName passed in the form
+			rc.speakerObj.setFirstName( trim( rc.firstName ) );
 
 			// TODO - set the value of lastName passed in the form
+			rc.speakerObj.setLastName( trim( rc.lastName ) );
 
 			// TODO - set the value of jobTitle passed in the form
+			rc.speakerObj.setJobTitle( trim( rc.jobTitle ) );
 
 			// TODO - set the value of company passed in the form
+			rc.speakerObj.setCompany( trim( rc.company ) );
 
 			// TODO - set the value of email passed in the form
+			rc.speakerObj.setEmail( trim( rc.email ) );
 
 			// TODO - set the value of bio passed in the form
+			rc.speakerObj.setBio( trim( rc.bio ) );
 
 			// TODO - set the value of hideSpeaker passed in the form
+			rc.speakerObj.setHideSpeaker( trim( rc.hideSpeaker ) );
 
 			// TODO - set the value of updatedOn to now()
+			rc.speakerObj.setUpdatedOn( now() );
 
 			// TODO - set isActive to true
+			rc.speakerObj.setIsActive( true );
 
 
 			// TODO - save the speaker bean to the database
+			application.speakerService.saveSpeaker( rc.speakerObj );
 
 
 			// clear all cached query data using a function from speakerService

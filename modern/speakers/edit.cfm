@@ -8,19 +8,23 @@
 	structAppend( rc, url );
 
 	// TODO - get the speaker bean
+	rc.speakerObj = new models.beans.SpeakerBean();
 
 	// TODO - set speakerID of the speaker bean from obfuscated and encrypted value passed in url
+	rc.speakerObj.setSpeakerID( rc.speakerObj.getDecUid( rc[ rc.speakerObj.getUidHash( 'url' ) ], 'url' ) );
 
 	// get a random token key for CSRF protection
 	rc.tokenKey = application.securityService.generateTokenKey();
 
 	// TODO - check if speakerID is a non-zero guid
-	if( 1 == 1 ) {
+	if( rc.speakerObj.getSpeakerID() neq application.zeroGuid ) {
 		// TODO - it is, populate the speaker bean from the database
+		rc.speakerObj = application.speakerService.getSpeakerByID( rc.speakerObj.getSpeakerID() );
 
 	}
 
 	// TODO - get the speaker types to populate the select box, use the filter function in speakerTypeService
+	rc.speakerTypes = application.speakerTypeService.filter(isActive = true);
 
 </cfscript>
 
@@ -41,11 +45,10 @@
 
 		<!-- form -->
 		<form role="form" name="recEditFrm" id="recEditFrm" action="/modern/speakers/_handler.cfm?method=update" method="post" class="form-horizontal" data-toggle="validator">
-			<!--- TODO - uncomment once you have the speaker bean in rc.speakerObj
+			<!---TODO - uncomment once you have the speaker bean in rc.speakerObj --->
 			<input type="hidden" name="#rc.speakerObj.getUidHash( 'form' )#" value="#rc.speakerObj.getEncUid( 'form' )#">
 			<input type="hidden" name="#rc.speakerObj.getTokenKeyHash()#" value="#rc.tokenKey#">
 			<input type="hidden" name="#rc.speakerObj.getTokenHash()#" value="#CSRFGenerateToken( rc.tokenKey, true )#">
-			--->
 
 			<div class="form-group row">
 				<label for="speakerTypeID" class="col-sm-2 col-form-label col-form-label-sm">
@@ -55,6 +58,9 @@
 					<select name="speakerTypeID" class="form-control form-control-sm" id="speakerTypeID" data-error="Please choose a speakerType.">
 						<option value="">Select speakerType</option>
 						<!-- build option list using values from a speaker type query -->
+						<cfloop query="rc.speakerTypes">
+							<option value="#rc.speakerTypes.speakerTypeID#" <cfif rc.speakerObj.getSpeakerTypeID() eq rc.speakerTypes.speakerTypeID>selected</cfif>>#rc.speakerTypes.speakerTypeName#</option>
+						</cfloop>
 					</select>
 				</div>
 			</div>
@@ -63,7 +69,7 @@
 					First Name
 				</label>
 				<div class="col-sm-10">
-					<input type="text" name="firstName" class="form-control form-control-sm" id="firstName" value="" placeholder="First Name">
+					<input type="text" name="firstName" class="form-control form-control-sm" id="firstName" value="#rc.speakerObj.getFirstName()#" placeholder="First Name">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -71,7 +77,7 @@
 					Last Name
 				</label>
 				<div class="col-sm-10">
-					<input type="text" name="lastName" class="form-control form-control-sm" id="lastName" value="" placeholder="Last Name">
+					<input type="text" name="lastName" class="form-control form-control-sm" id="lastName" value="#rc.speakerObj.getLastName()#" placeholder="Last Name">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -79,7 +85,7 @@
 					Job Title
 				</label>
 				<div class="col-sm-10">
-					<input type="text" name="jobTitle" class="form-control form-control-sm" id="jobTitle" value="" placeholder="Job title">
+					<input type="text" name="jobTitle" class="form-control form-control-sm" id="jobTitle" value="#rc.speakerObj.getJobTitle()#" placeholder="Job title">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -87,7 +93,7 @@
 					Company
 				</label>
 				<div class="col-sm-10">
-					<input type="text" name="company" class="form-control form-control-sm" id="company" value="" placeholder="Company">
+					<input type="text" name="company" class="form-control form-control-sm" id="company" value="#rc.speakerObj.getCompany()#" placeholder="Company">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -95,7 +101,7 @@
 					Email
 				</label>
 				<div class="col-sm-10">
-					<input type="text" name="email" class="form-control form-control-sm" id="email" value="" placeholder="Email" data-error="Email is required">
+					<input type="text" name="email" class="form-control form-control-sm" id="email" value="#rc.speakerObj.getEmail()#" placeholder="Email" data-error="Email is required">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -103,7 +109,7 @@
 					Bio
 				</label>
 				<div class="col-sm-10">
-					<textarea name="bio"></textarea>
+					<textarea name="bio">#rc.speakerObj.getBio()#</textarea>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -112,8 +118,8 @@
 				</label>
 				<div class="col-sm-10">
 					<select name="hideSpeaker" class="form-control form-control-sm" id="hideSpeaker" data-error="Please choose a hideSpeaker." required>
-						<option value="false">No</option>
-						<option value="true">Yes</option>
+						<option value="false" <cfif rc.speakerObj.getHideSpeaker() eq "false">selected</cfif>>No</option>
+						<option value="true" <cfif rc.speakerObj.getHideSpeaker() eq "true">selected</cfif>>Yes</option>
 					</select>
 				</div>
 			</div>

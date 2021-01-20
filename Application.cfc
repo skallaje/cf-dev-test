@@ -3,6 +3,7 @@ component {
 	this.datasource = "Meetingplay_codeTest";
 	this.sessionManagement = true;
 	this.ormEnabled	= true;
+	this.mappings["/models"] = "/models"; 
 	this.scriptprotect = "all"; //cross site scripting protection
 
 	// orm settings
